@@ -13,4 +13,6 @@ public class SceneGrabber : MonoBehaviour
     /// The list of all walkable platforms.
     /// </summary>
     public List<Collider> Grounds => grounds;
+
+    public Player Player => FindObjectOfType<Player>();
 }

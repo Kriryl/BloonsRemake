@@ -9,7 +9,7 @@ public class BloonHirachy : MonoBehaviour
     {
         public float speed = 1f;
         public float health = 1f;
-        public Color color = Color.white;
+        public Material material;
 
         public int BloonIndex { get; set; }
     }

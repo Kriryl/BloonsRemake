@@ -1,6 +1,5 @@
 using UnityEngine.AI;
 using UnityEngine;
-using UnityEngine.ProBuilder;
 
 public enum BloonType { None, Red, Blue, Green, Yellow, Pink, Rainbow, Ceramic }
 
@@ -13,25 +12,24 @@ public class Bloon : MonoBehaviour
     public float speed = 1f;
     public Transform target;
     public int Index = 0;
-    public Color color;
-    public ProBuilderMesh pbm;
-    public Mesh mesh;
+    public MeshRenderer mesh;
 
     private NavMeshAgent agent;
     private BloonHirachy bloonHirachy;
 
     public BloonHirachy.BloonInfo BloonInfo { get; private set; }
 
-    private void Start()
+    public void Init()
     {
         agent = GetComponent<NavMeshAgent>();
+        target = Main.Current.SceneGrabber.Player.transform;
+
+        bloonHirachy = Main.Current.Hirachy;
         GetBloonInfo();
     }
 
     private void GetBloonInfo()
     {
-        bloonHirachy = Main.Current.Hirachy;
-
         if (!bloonHirachy) { return; }
 
         BloonInfo = bloonHirachy.GetBloonInfo(bloonType);
@@ -40,14 +38,15 @@ public class Bloon : MonoBehaviour
 
     private void SetInfo()
     {
+        if (BloonInfo == null) { return; }
+
         speed = BloonInfo.speed;
         Health = BloonInfo.health;
         Index = BloonInfo.BloonIndex;
-        if (!pbm) { return; }
 
-        color = BloonInfo.color;
+        if (!mesh) { return; }
 
-        mesh.colors[0] = color;
+        mesh.material = BloonInfo.material;
     }
 
     /// <summary>
