@@ -6,15 +6,30 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public float speed = 2f;
+    public float attackSpeed = 1f;
+    public float damage = 1f;
+    public float pierce = 0f;
     public float jumpHeight = 2f;
     public float lookSensitivity = 1f;
     public float jumpDuration = 1f;
     public bool isGrounded = true;
 
+    [Header("Projectile")]
+    public Projectile projectile;
+    public float projectileLifeTime = 5f;
+    public float projectileSpeed = 800f;
+    public float projectileMass = 0.6f;
+
     private Camera cam;
     private Rigidbody rb;
     private MouseLooker mouseLooker;
     private CapsuleCollider playerCollider;
+
+    private float nextTimeToFire = 0f;
+
+    public float AttackSpeedMultiplier { get; set; } = 1f;
+
+    public float AttackSpeed => attackSpeed * AttackSpeedMultiplier;
 
     private void Start()
     {
@@ -24,13 +39,37 @@ public class Player : MonoBehaviour
         playerCollider = GetComponent<CapsuleCollider>();
 
         mouseLooker.Init(transform, cam.transform);
+
+        nextTimeToFire = Time.time + (1 / AttackSpeed);
     }
 
     private void Update()
     {
         RotatePlayer();
         CheckIfGrounded();
+        CheckForAttack();
         MovePlayer();
+    }
+
+    private void CheckForAttack()
+    {
+        if (Time.time >= nextTimeToFire && Input.GetMouseButton(0))
+        {
+            Fire();
+            nextTimeToFire = Time.time + (1 / AttackSpeed);
+        }
+    }
+
+    private void Fire()
+    {
+        if (!projectile) { return; }
+
+        Projectile newProjectile = Instantiate(projectile, cam.transform.position, transform.rotation);
+
+        newProjectile.Init(projectileSpeed, projectileMass, damage, pierce);
+
+        newProjectile.Fire(transform.rotation);
+        Destroy(newProjectile.gameObject, projectileLifeTime);
     }
 
     private void MovePlayer()
