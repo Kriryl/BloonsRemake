@@ -72,7 +72,7 @@ public class Bloon : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Projectile projectile = other.GetComponentInParent<Projectile>();
+        Projectile projectile = other.GetComponent<Projectile>();
 
         if (!projectile) { return; }
 

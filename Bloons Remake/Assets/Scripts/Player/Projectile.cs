@@ -9,11 +9,13 @@ public class Projectile : MonoBehaviour
     public float damage = 1f;
     public float pierce = 1f;
 
+    private float usedPierce = 0f;
+
     public Rigidbody RigidBody { get; set; }
 
     private void Start()
     {
-        RigidBody = GetComponentInChildren<Rigidbody>();
+        RigidBody = GetComponent<Rigidbody>();
     }
 
     private void Update()
@@ -41,5 +43,15 @@ public class Projectile : MonoBehaviour
         Vector3 direction = rotation * Vector3.forward * speed;
 
         RigidBody.AddForce(direction);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (!other.GetComponent<Bloon>()) { return; }
+        usedPierce++;
+        if (usedPierce > pierce)
+        {
+            Destroy(gameObject);
+        }
     }
 }

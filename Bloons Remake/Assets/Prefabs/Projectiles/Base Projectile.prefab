@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7520117623250440182}
   - component: {fileID: 2581659545609513383}
   - component: {fileID: 6702182719017443120}
+  - component: {fileID: 5864333462948502244}
   m_Layer: 8
   m_Name: Base Projectile
   m_TagString: Untagged
@@ -71,6 +72,33 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.3902959, y: 0.34063357, z: 1.3292834}
   m_Center: {x: 0.0065546604, y: 0.037933998, z: -0.06548171}
+--- !u!54 &5864333462948502244
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5117155768460983313}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1001 &4584103355631790114
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -137,6 +165,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 9043898217692799980, guid: 4ba2f76b6cfa2b5489d295e93b6462b7, type: 3}
+    - {fileID: 6113688083828268351, guid: 4ba2f76b6cfa2b5489d295e93b6462b7, type: 3}
+    - {fileID: 3533974676584590651, guid: 4ba2f76b6cfa2b5489d295e93b6462b7, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
