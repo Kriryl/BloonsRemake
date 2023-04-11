@@ -97,8 +97,8 @@ public class Bloon : MonoBehaviour
                     Index -= 1; // Index gets reduced by one
                     BloonInfo = bloonHirachy.Hirachy[Index]; // Then set current bloon to new index
                     SetInfo();
-                    continue; // Continue loop
                 }
+                Main.Current.money += 1f;
             }
         }
     }

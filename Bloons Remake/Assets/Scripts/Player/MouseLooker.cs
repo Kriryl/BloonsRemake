@@ -48,8 +48,6 @@ public class MouseLooker : MonoBehaviour
             character.localRotation = bodyRot;
             camera.localRotation = camRot;
         }
-
-        UpdateCursorLock();
     }
 
     public void SetCursorLock(bool value)
@@ -60,13 +58,6 @@ public class MouseLooker : MonoBehaviour
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }
-    }
-
-    public void UpdateCursorLock()
-    {
-        //if the user set "lockCursor" we check & properly lock the cursos
-        if (lockCursor)
-            InternalLockUpdate();
     }
 
     private void InternalLockUpdate()
