@@ -8,35 +8,47 @@ public enum PlayerType { None, DartMonkey }
 public class Player : MonoBehaviour
 {
     public PlayerType playerType;
+    public float jumpHeight;
 
     /// <summary>
-    /// How fast the player moves.
+    /// How fast the player moves (In units/second).
     /// </summary>
-    public virtual float Speed { get; } = 4f;
-    /// <summary>
-    /// How many times a second the player attacks.
-    /// </summary>
-    public virtual float AttackSpeed { get; } = 1f;
-    /// <summary>
-    /// The amount of damage each attack deals.
-    /// </summary>
-    public virtual float Damage { get; } = 1f;
-    /// <summary>
-    /// How many times an attack can pierce.
-    /// </summary>
-    public virtual float Pierce { get; } = 0f;
-    /// <summary>
-    /// How high the player jumps.
-    /// </summary>
-    public virtual float JumpHeight { get; } = 20f;
+    public float Speed { get; set; } = 4f;
 
-    public virtual Projectile Projectile { get; }
+    /// <summary>
+    /// How many times a second the player shoots.
+    /// </summary>
+    public float AttackSpeed { get; set; } = 1f;
 
-    public virtual float ProjectileLifeTime { get; } = 4f;
+    /// <summary>
+    /// How many layers of damage the projectile deals.
+    /// </summary>
+    public float Damage { get; set; } = 1f;
 
-    public virtual float ProjectileSpeed { get; } = 2f;
+    /// <summary>
+    /// How many times the projectile can pierce.
+    /// </summary>
+    public int Pierce { get; set; } = 1;
 
-    public virtual float ProjectileMass { get; } = 0.2f;
+    /// <summary>
+    /// The projectile prefab.
+    /// </summary>
+    public Projectile Projectile { get; set; }
+
+    /// <summary>
+    /// How fast the projectile will be shot at.
+    /// </summary>
+    public float ProjectileSpeed { get; set; } = 1000f;
+
+    /// <summary>
+    /// The mass of the projectile.
+    /// </summary>
+    public float ProjectileMass { get; set; } = 0.5f;
+
+    /// <summary>
+    /// The lifetime of the projectile in seconds.
+    /// </summary>
+    public float ProjectileLifeTime { get; set; } = 1f;
 
     public bool isGrounded = true;
 
@@ -61,6 +73,13 @@ public class Player : MonoBehaviour
         mouseLooker.Init(transform, cam.transform);
 
         nextTimeToFire = Time.time + (1 / AttackSpeed);
+
+        SetupPlayer();
+    }
+
+    public virtual void SetupPlayer()
+    {
+
     }
 
     private void Update()
@@ -111,7 +130,7 @@ public class Player : MonoBehaviour
 
         if (jump > Mathf.Epsilon && isGrounded)
         {
-            rb.AddForce(jump * JumpHeight * Vector3.up);
+            rb.AddForce(jump * jumpHeight * Vector3.up);
         }
     }
 

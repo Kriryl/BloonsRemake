@@ -45,6 +45,7 @@ public class MouseLooker : MonoBehaviour
         }
         else
         {
+            if (Main.MenuOpen) { return; }
             character.localRotation = bodyRot;
             camera.localRotation = camRot;
         }

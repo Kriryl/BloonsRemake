@@ -1,33 +1,71 @@
-using System.Collections;
-using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using System;
+using System.Collections.Generic;
 
-public class UpgradePath : MonoBehaviour
+namespace PlayerUpgrades
 {
-    [Serializable]
-    public class Upgrade
+    public class UpgradePath : MonoBehaviour
     {
-        public float cost;
-    }
-
-    public Upgrade upgradeOne, upgradeTwo, upgradeThree;
-
-    public int Index { get; set; } = 0;
-
-    public Upgrade GetUpgrade()
-    {
-        return Index switch
+        [Serializable]
+        public class Upgrade
         {
-            0 => upgradeOne,
-            1 => upgradeTwo,
-            2 => upgradeThree,
-            _ => null,
-        };
-    }
+            public float cost;
 
-    public virtual void OnUpgrade()
-    {
-        print("upgraded!");
+            public string upgradeName = "New Upgrade";
+            public string upgradeDescription = "New Description";
+
+            public float fValue = 0f;
+            public int iValue = 0;
+        }
+
+        private TextMeshProUGUI nameText, descriptionText;
+        public List<Upgrade> upgrades = new();
+
+        public int Index { get; set; } = 0;
+
+        public Player Player { get; private set; }
+
+        private void Start()
+        {
+            Player = FindObjectOfType<Player>();
+
+            TextMeshProUGUI[] texts = GetComponentsInChildren<TextMeshProUGUI>();
+            try
+            {
+                nameText = texts[1];
+                descriptionText = texts[2];
+            }
+            catch
+            {
+                print("Could not find text component in children!");
+            }
+        }
+
+        public void Update()
+        {
+            Upgrade upgrade = GetUpgrade();
+            if (upgrade == null) { return; }
+
+            nameText.text = upgrade.upgradeName;
+            descriptionText.text = upgrade.upgradeDescription;
+        }
+
+        public Upgrade GetUpgrade()
+        {
+            try
+            {
+                return upgrades[Index];
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public virtual void OnUpgrade(Upgrade currentUpgrade)
+        {
+            Index++;
+        }
     }
 }

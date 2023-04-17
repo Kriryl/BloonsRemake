@@ -6,6 +6,8 @@ public class Main : MonoBehaviour
     public float money = 0f;
     public TextMeshProUGUI moneyText;
 
+    public static bool MenuOpen { get; private set; }
+
     public SceneGrabber SceneGrabber { get; private set; }
     public BloonHirachy Hirachy { get; private set; }
 
@@ -23,11 +25,13 @@ public class Main : MonoBehaviour
         {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
+            MenuOpen = true;
         }
         else
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
+            MenuOpen = false;
         }
         moneyText.text = $"${money}";
     }
