@@ -34,13 +34,15 @@ public class Projectile : MonoBehaviour
         this.pierce = pierce;
     }
 
-    public void Fire(Quaternion rotation)
+    public void Fire(Quaternion playerRotation, Quaternion cameraRotation)
     {
         RigidBody = GetComponentInChildren<Rigidbody>();
 
         if (!RigidBody) { return; }
 
-        Vector3 direction = rotation * Vector3.forward * speed;
+        Quaternion totRotation = new(cameraRotation.x, playerRotation.y, cameraRotation.z, playerRotation.w);
+
+        Vector3 direction = totRotation * Vector3.forward * speed;
 
         RigidBody.AddForce(direction);
     }

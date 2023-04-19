@@ -2,6 +2,7 @@ using TMPro;
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 namespace PlayerUpgrades
 {
@@ -19,10 +20,12 @@ namespace PlayerUpgrades
             public int iValue = 0;
         }
 
-        private TextMeshProUGUI nameText, descriptionText;
+        private TextMeshProUGUI buyText, nameText, descriptionText;
         public List<Upgrade> upgrades = new();
 
         public int Index { get; set; } = 0;
+
+        public bool mouseOver = false;
 
         public Player Player { get; private set; }
 
@@ -33,6 +36,7 @@ namespace PlayerUpgrades
             TextMeshProUGUI[] texts = GetComponentsInChildren<TextMeshProUGUI>();
             try
             {
+                buyText = texts[0];
                 nameText = texts[1];
                 descriptionText = texts[2];
             }
@@ -46,6 +50,15 @@ namespace PlayerUpgrades
         {
             Upgrade upgrade = GetUpgrade();
             if (upgrade == null) { return; }
+
+            if (Main.Current.money - upgrade.cost >= 0f)
+            {
+                buyText.text = mouseOver ? "BUY" : $"${upgrade.cost}";
+            }
+            else
+            {
+                buyText.text = mouseOver ? "Can't Afford" : $"${upgrade.cost}";
+            }
 
             nameText.text = upgrade.upgradeName;
             descriptionText.text = upgrade.upgradeDescription;

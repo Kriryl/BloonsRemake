@@ -9,6 +9,8 @@ public class DartMonkey : Player
         base.SetupPlayer();
 
         Projectile = PrefabGetter.DartMonkeyProjectile;
-        ProjectileLifeTime = 1.5f;
+        ProjectileLifeTime = 1f;
+        ProjectileMass = 0.2f;
+        Pierce = 0;
     }
 }

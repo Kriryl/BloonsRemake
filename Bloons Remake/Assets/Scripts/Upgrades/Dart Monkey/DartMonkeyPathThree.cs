@@ -4,21 +4,22 @@ using UnityEngine;
 
 namespace PlayerUpgrades.Paths
 {
-    public class DartMonkeyPathOne : UpgradePath
+    public class DartMonkeyPathThree : UpgradePath
     {
         public override void OnUpgrade(Upgrade currentUpgrade)
         {
             switch (Index)
             {
-                case 2:
-                    Player.Projectile = PrefabGetter.DartMonkeySpikedBall;
-                    Player.AttackSpeed -= currentUpgrade.fValue;
+                case 0:
+                    Player.ProjectileLifeTime += currentUpgrade.fValue;
+                    break;
+                case 1:
+                    Player.Damage += 2;
+                    Player.ProjectileSpeed += 500f;
                     break;
                 default:
                     break;
             }
-
-            Player.Pierce += currentUpgrade.iValue;
             base.OnUpgrade(currentUpgrade);
         }
     }

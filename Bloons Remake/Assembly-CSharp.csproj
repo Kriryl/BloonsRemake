@@ -69,6 +69,7 @@
     <Compile Include="Assets\Scripts\Player\Monkeys\DartMonkey.cs" />
     <Compile Include="Assets\Scripts\World\Spawner.cs" />
     <Compile Include="Assets\Scripts\Bloons\Bloon.cs" />
+    <Compile Include="Assets\Scripts\Upgrades\Dart Monkey\DartMonkeyPathThree.cs" />
     <Compile Include="Assets\Scripts\Player\Projectile.cs" />
     <Compile Include="Assets\Scripts\World\PrefabGetter.cs" />
     <Compile Include="Assets\Scripts\Bloons\BloonHirachy.cs" />

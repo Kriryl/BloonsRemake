@@ -8,7 +8,7 @@ namespace PlayerUpgrades.Paths
     {
         public override void OnUpgrade(Upgrade currentUpgrade)
         {
-            Player.AttackSpeed *= currentUpgrade.fValue;
+            Player.AttackSpeed += currentUpgrade.fValue;
             base.OnUpgrade(currentUpgrade);
         }
     }

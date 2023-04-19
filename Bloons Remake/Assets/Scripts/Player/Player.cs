@@ -107,7 +107,7 @@ public class Player : MonoBehaviour
 
         newProjectile.Init(ProjectileSpeed, ProjectileMass, Damage, Pierce);
 
-        newProjectile.Fire(transform.rotation);
+        newProjectile.Fire(transform.rotation, cam.transform.rotation);
         Destroy(newProjectile.gameObject, ProjectileLifeTime);
     }
 

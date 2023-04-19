@@ -826,7 +826,7 @@ GameObject:
   - component: {fileID: 256531656}
   - component: {fileID: 256531659}
   - component: {fileID: 256531658}
-  - component: {fileID: 256531657}
+  - component: {fileID: 256531660}
   m_Layer: 0
   m_Name: Path 3
   m_TagString: Untagged
@@ -857,19 +857,6 @@ RectTransform:
   m_AnchoredPosition: {x: -0.000094887, y: -97.1}
   m_SizeDelta: {x: 400, y: 172.3938}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &256531657
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 256531655}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7b96e142d4cb6c40a61f50e40c40e03, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  upgrades: []
 --- !u!114 &256531658
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -908,6 +895,30 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 256531655}
   m_CullTransparentMesh: 1
+--- !u!114 &256531660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 256531655}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71bcad03e299ff04abb19e9385d92d03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  upgrades:
+  - cost: 10
+    upgradeName: Longer Darts
+    upgradeDescription: Shoot further than normal
+    fValue: 1
+    iValue: 0
+  - cost: 21
+    upgradeName: Crossbow
+    upgradeDescription: Long range crossbow can pop 3 layers of Bloon
+    fValue: 1.5
+    iValue: 0
+  mouseOver: 0
 --- !u!1 &386169674
 GameObject:
   m_ObjectHideFlags: 0
@@ -1260,7 +1271,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh23746
+  m_Name: pb_Mesh23752
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -2067,13 +2078,19 @@ MonoBehaviour:
   - cost: 20
     upgradeName: Faster Throwing
     upgradeDescription: Shoot 15% faster.
-    fValue: 1.15
+    fValue: 0.25
     iValue: 0
   - cost: 30
     upgradeName: Even Faster Throwing
     upgradeDescription: Shoot 33% faster!
-    fValue: 1.33
+    fValue: 0.33
     iValue: 0
+  - cost: 50
+    upgradeName: Triple Shot
+    upgradeDescription: Shoot 3 darts at a time
+    fValue: 2
+    iValue: 0
+  mouseOver: 0
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -2215,8 +2232,9 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 858103801}
+  - {fileID: 1213950221}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &715738991
 MonoBehaviour:
@@ -2276,6 +2294,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dartMonkeyProjectile: {fileID: 2581659545609513383, guid: 6dfed13c631d99f428b71f1a1a2abf86, type: 3}
+  dartMonkeySpikedBall: {fileID: 3903993487216385231, guid: 1d9d3915f74c1db4487038d242c975e0, type: 3}
 --- !u!1 &723035914
 GameObject:
   m_ObjectHideFlags: 0
@@ -2371,12 +2390,12 @@ MonoBehaviour:
   upgrades:
   - cost: 15
     upgradeName: Sharp Shots
-    upgradeDescription: Darts can pierce through one more bloon.
+    upgradeDescription: Darts can pierce 1 more Bloon
     fValue: 0
     iValue: 1
   - cost: 30
     upgradeName: Sharper Shots
-    upgradeDescription: Darts can pierce up to 4 times.
+    upgradeDescription: Darts can pierce 2 extra Bloons
     fValue: 0
     iValue: 2
   - cost: 45
@@ -2385,6 +2404,7 @@ MonoBehaviour:
       pop way more bloons.
     fValue: 0
     iValue: 8
+  mouseOver: 0
 --- !u!1 &858103800
 GameObject:
   m_ObjectHideFlags: 0
@@ -2724,7 +2744,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1213950217
 GameObject:
@@ -2834,8 +2854,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 963194228}
-  m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_Father: {fileID: 715738990}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &1213950224
 Rigidbody:
@@ -2897,7 +2917,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerType: 1
-  jumpHeight: 0
+  jumpHeight: 3
   isGrounded: 1
 --- !u!1 &1271213050
 GameObject:
@@ -3223,7 +3243,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pathOne: {fileID: 723035918}
   pathTwo: {fileID: 699972738}
-  pathThree: {fileID: 256531657}
+  pathThree: {fileID: 256531660}
 --- !u!1 &1296783745
 GameObject:
   m_ObjectHideFlags: 0
@@ -3679,7 +3699,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1760950034
 GameObject:
