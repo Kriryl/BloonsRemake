@@ -1,49 +1,81 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 namespace PlayerUpgrades
 {
     public class Upgrades : MonoBehaviour
     {
-        public UpgradePath pathOne, pathTwo, pathThree;
+        [Serializable]
+        public class Path
+        {
+            public List<Upgrade> upgrades = new();
+
+            public int Index { get; private set; } = 0;
+
+            public Upgrade PlaceHolder;
+
+            public Upgrade GetUpgrade()
+            {
+                return Index > upgrades.Count - 1 ? PlaceHolder : upgrades[Index];
+            }
+
+            public void Next()
+            {
+                Index++;
+            }
+        }
+
+        [Serializable]
+        public class Upgrade
+        {
+            public float cost;
+            public string upgradeName = "";
+            public string description = "";
+        }
+
+        public Path pOne, pTwo, pThree;
+
+        public GameObject upgradeContainer;
+
+        public Player Player { get; private set; }
+
+        public List<Path> Paths { get; set; } = new();
+
+        private void Awake()
+        {
+            Paths.Add(pOne);
+            Paths.Add(pTwo);
+            Paths.Add(pThree);
+
+            Player = FindObjectOfType<Player>();
+        }
 
         private void Update()
         {
-            pathOne.gameObject.SetActive(Main.MenuOpen);
-            pathTwo.gameObject.SetActive(Main.MenuOpen);
-            pathThree.gameObject.SetActive(Main.MenuOpen);
-        }
-
-        public void OnUpgrade(int index)
-        {
-            UpgradePath path = GetPath(index);
-            if (path == null) { return; }
-
-            UpgradePath.Upgrade upgrade = path.GetUpgrade();
-            if (upgrade == null) { return; }
-
-            if (!CanAfford(upgrade.cost)) { return; }
-
-            Main.Current.money -= upgrade.cost;
-
-            path.OnUpgrade(path.GetUpgrade());
-        }
-
-        private UpgradePath GetPath(int index)
-        {
-            return index switch
+            if (!Main.MenuOpen)
             {
-                1 => pathOne,
-                2 => pathTwo,
-                3 => pathThree,
-                _ => null
-            };
+                upgradeContainer.SetActive(false);
+                return;
+            }
+            upgradeContainer.SetActive(true);
         }
 
-        private bool CanAfford(float cost)
+        public virtual void OnPathOneUpgrade(int index)
         {
-            return Main.Current.money - cost >= 0f;
+
         }
+
+        public virtual void OnPathTwoUpgrade(int index)
+        {
+
+        }
+
+        public virtual void OnPathThreeUpgrade(int index)
+        {
+
+        }
+
     }
 }

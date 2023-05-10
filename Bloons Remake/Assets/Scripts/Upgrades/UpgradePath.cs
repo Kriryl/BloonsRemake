@@ -1,84 +1,92 @@
-using TMPro;
 using UnityEngine;
 using System;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using TMPro;
 
 namespace PlayerUpgrades
 {
+    public enum Path { PathOne, PathTwo, PathThree }
+
     public class UpgradePath : MonoBehaviour
     {
-        [Serializable]
-        public class Upgrade
-        {
-            public float cost;
+        public Path path;
+        
+        private Upgrades upgrades;
 
-            public string upgradeName = "New Upgrade";
-            public string upgradeDescription = "New Description";
+        public TextMeshProUGUI upgradeName;
+        public TextMeshProUGUI upgradeDescription;
+        public TextMeshProUGUI buttonText;
+        public Button upgradeButton;
 
-            public float fValue = 0f;
-            public int iValue = 0;
-        }
+        public float Money { get => Main.Current.money; set => Main.Current.money = value; }
 
-        private TextMeshProUGUI buyText, nameText, descriptionText;
-        public List<Upgrade> upgrades = new();
-
-        public int Index { get; set; } = 0;
-
-        public bool mouseOver = false;
-
-        public Player Player { get; private set; }
+        public Upgrades.Upgrade CurrentUpgrade { get; set; }
 
         private void Start()
         {
-            Player = FindObjectOfType<Player>();
-
-            TextMeshProUGUI[] texts = GetComponentsInChildren<TextMeshProUGUI>();
-            try
-            {
-                buyText = texts[0];
-                nameText = texts[1];
-                descriptionText = texts[2];
-            }
-            catch
-            {
-                print("Could not find text component in children!");
-            }
+            upgrades = FindObjectOfType<Upgrades>();
         }
 
-        public void Update()
+        private void Update()
         {
-            Upgrade upgrade = GetUpgrade();
-            if (upgrade == null) { return; }
+            CurrentUpgrade = GetPath().GetUpgrade();
 
-            if (Main.Current.money - upgrade.cost >= 0f)
-            {
-                buyText.text = mouseOver ? "BUY" : $"${upgrade.cost}";
-            }
-            else
-            {
-                buyText.text = mouseOver ? "Can't Afford" : $"${upgrade.cost}";
-            }
+            if (CurrentUpgrade == null) { return; }
 
-            nameText.text = upgrade.upgradeName;
-            descriptionText.text = upgrade.upgradeDescription;
+            upgradeName.text = CurrentUpgrade.upgradeName;
+            upgradeDescription.text = CurrentUpgrade.description;
+            buttonText.text = $"${CurrentUpgrade.cost}";
+
+            Image im = upgradeButton.GetComponent<Image>();
+            if (!im) { return; }
+            im.color = CanAfford(CurrentUpgrade.cost) ? Color.green : Color.red;
         }
 
-        public Upgrade GetUpgrade()
+        public void OnBuy()
         {
-            try
-            {
-                return upgrades[Index];
-            }
-            catch
-            {
-                return null;
-            }
+            if (!upgrades) { return; }
+
+            if (!CanAfford(CurrentUpgrade.cost)) { return; }
+
+            CallPath();
         }
 
-        public virtual void OnUpgrade(Upgrade currentUpgrade)
+        public Upgrades.Path GetPath()
         {
-            Index++;
+            return path switch
+            {
+                Path.PathOne => upgrades.Paths[0],
+                Path.PathTwo => upgrades.Paths[1],
+                Path.PathThree => upgrades.Paths[2],
+                _ => upgrades.Paths[0]
+            };
+        }
+
+        private void CallPath()
+        {
+            Upgrades.Path pathIndex = GetPath();
+
+            switch (path)
+            {
+                case Path.PathOne:
+                    upgrades.OnPathOneUpgrade(pathIndex.Index);
+                    break;
+                case Path.PathTwo:
+                    upgrades.OnPathTwoUpgrade(pathIndex.Index);
+                    break;
+                case Path.PathThree:
+                    upgrades.OnPathThreeUpgrade(pathIndex.Index);
+                    break;
+                default:
+                    break;
+            }
+            pathIndex.Next();
+        }
+
+        public bool CanAfford(float cost)
+        {
+            return Money - cost >= 0f;
         }
     }
 }

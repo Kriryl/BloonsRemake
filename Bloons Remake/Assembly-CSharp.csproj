@@ -61,7 +61,6 @@
     <Compile Include="Assets\Scripts\Upgrades\Upgrades.cs" />
     <Compile Include="Assets\Scripts\World\Main.cs" />
     <Compile Include="Assets\Scripts\Upgrades\UpgradePath.cs" />
-    <Compile Include="Assets\Scripts\Upgrades\Dart Monkey\DartMonkeyPathOne.cs" />
     <Compile Include="Assets\Scripts\GameEvents.cs" />
     <Compile Include="Assets\Scripts\World\SceneGrabber.cs" />
     <Compile Include="Assets\Scripts\Player\Player.cs" />
@@ -69,11 +68,10 @@
     <Compile Include="Assets\Scripts\Player\Monkeys\DartMonkey.cs" />
     <Compile Include="Assets\Scripts\World\Spawner.cs" />
     <Compile Include="Assets\Scripts\Bloons\Bloon.cs" />
-    <Compile Include="Assets\Scripts\Upgrades\Dart Monkey\DartMonkeyPathThree.cs" />
+    <Compile Include="Assets\Scripts\Upgrades\Dart Monkey\DartMonkeyUpgrades.cs" />
     <Compile Include="Assets\Scripts\Player\Projectile.cs" />
     <Compile Include="Assets\Scripts\World\PrefabGetter.cs" />
     <Compile Include="Assets\Scripts\Bloons\BloonHirachy.cs" />
-    <Compile Include="Assets\Scripts\Upgrades\Dart Monkey\DartMonkeyPathTwo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

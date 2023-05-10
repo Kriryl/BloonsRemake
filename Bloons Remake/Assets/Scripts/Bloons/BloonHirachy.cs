@@ -10,8 +10,14 @@ public class BloonHirachy : MonoBehaviour
         public float speed = 1f;
         public float health = 1f;
         public Material material;
+        public int numOfChilden = 0;
 
         public int BloonIndex { get; set; }
+
+        public override string ToString()
+        {
+            return $"Index: {BloonIndex}, Speed: {speed}";
+        }
     }
 
     public List<BloonInfo> Hirachy { get; private set; } = new();
@@ -34,9 +40,15 @@ public class BloonHirachy : MonoBehaviour
 
         Hirachy.Add(pink);
         pink.BloonIndex = 4;
+
+        Hirachy.Add(rainbow);
+        rainbow.BloonIndex = 5;
+
+        Hirachy.Add(ceramic);
+        ceramic.BloonIndex = 6;
     }
 
-    public BloonInfo red, blue, green, yellow, pink;
+    public BloonInfo red, blue, green, yellow, pink, rainbow, ceramic;
 
     public BloonInfo GetBloonInfo(BloonType type)
     {
@@ -62,7 +74,7 @@ public class BloonHirachy : MonoBehaviour
                 info = pink;
                 break;
             case BloonType.Rainbow:
-                info = pink;
+                info = rainbow;
                 break;
             case BloonType.Ceramic:
                 info = pink;

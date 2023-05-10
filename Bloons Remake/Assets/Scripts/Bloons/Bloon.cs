@@ -10,6 +10,7 @@ public class Bloon : MonoBehaviour
 {
     public BloonType bloonType = BloonType.None;
     public float speed = 1f;
+    public int children = 0;
     public Transform target;
     public int Index = 0;
     public MeshRenderer mesh;
@@ -36,6 +37,12 @@ public class Bloon : MonoBehaviour
         SetInfo();
     }
 
+    public void SetBloonInfo(BloonHirachy.BloonInfo info)
+    {
+        BloonInfo = info;
+        SetInfo();
+    }
+
     private void SetInfo()
     {
         if (BloonInfo == null) { return; }
@@ -43,6 +50,7 @@ public class Bloon : MonoBehaviour
         speed = BloonInfo.speed;
         Health = BloonInfo.health;
         Index = BloonInfo.BloonIndex;
+        children = BloonInfo.numOfChilden;
 
         if (!mesh) { return; }
 
@@ -83,6 +91,8 @@ public class Bloon : MonoBehaviour
     {
         if (damage <= 0) { return; }
 
+        float remaining = damage;
+
         for (int i = 0; i < damage; i++) // We loop through the amount of damage it takes
         {
             Health -= 1; // We subtract 1 health per loop
@@ -90,16 +100,55 @@ public class Bloon : MonoBehaviour
             {
                 if (Index <= 0) // If this is the first bloon, destroy it
                 {
+                    Main.Current.money += 1f;
                     Destroy(gameObject);
+                    break;
                 }
                 else
                 {
-                    Index -= 1; // Index gets reduced by one
-                    BloonInfo = bloonHirachy.Hirachy[Index]; // Then set current bloon to new index
-                    SetInfo();
+                    if (children > 0) // If this bloon spawns more bloons we remove this bloon
+                    {
+                        remaining--;
+                        OnBloonPopped(remaining);
+                        break;
+                    }
+                    else
+                    {
+                        Index -= 1; // Index gets reduced by one
+                        BloonInfo = bloonHirachy.Hirachy[Index]; // Then set current bloon to new index
+                        remaining--;
+                        Main.Current.money += 1f;
+                        SetInfo();
+                    }
                 }
-                Main.Current.money += 1f;
             }
         }
+    }
+
+    private void OnBloonPopped(float remainingDamage)
+    {
+        print(remainingDamage);
+
+        if (children > 0 && Index > 0)
+        {
+            if (Index - remainingDamage < 0)
+            {
+                Main.Current.money += remainingDamage;
+                Destroy(gameObject);
+                return;
+            }
+
+            BloonHirachy.BloonInfo info = bloonHirachy.Hirachy[Index - (int)remainingDamage - 1]; // Currently only gets the prievious index
+            print(info);
+            for (int i = 0; i < children; i++) // We loop through all the children
+            {
+                Bloon b = Instantiate(PrefabGetter.BaseBloon, transform.position, transform.rotation); // We create a new base bloon
+                b.Init(); // Finally init the new bloon
+                b.SetBloonInfo(info); // And set it to the info
+            }
+        }
+
+        Main.Current.money += 1f + remainingDamage;
+        Destroy(gameObject);
     }
 }
