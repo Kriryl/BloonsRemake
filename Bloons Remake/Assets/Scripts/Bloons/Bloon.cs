@@ -17,15 +17,27 @@ public class Bloon : MonoBehaviour
 
     private NavMeshAgent agent;
     private BloonHirachy bloonHirachy;
+    private Tracker tracker;
 
     public BloonHirachy.BloonInfo BloonInfo { get; private set; }
 
-    public void Init()
+    public void Init(int ID = 0)
     {
         agent = GetComponent<NavMeshAgent>();
         target = Main.Current.SceneGrabber.Player.transform;
+        tracker = GetComponent<Tracker>();
+
+        if (ID == 0)
+        {
+            tracker.SetID(GetInstanceID());
+        }
+        else
+        {
+            tracker.SetID(ID);
+        }
 
         bloonHirachy = Main.Current.Hirachy;
+
         GetBloonInfo();
     }
 
@@ -84,6 +96,13 @@ public class Bloon : MonoBehaviour
 
         if (!projectile) { return; }
 
+        if (projectile.trackIDs.Contains(tracker.bloonID))
+        {
+            tracker.bloonID = GetInstanceID();
+            return;
+        }
+        projectile.trackIDs.Add(tracker.bloonID);
+
         OnBloonDamaged(projectile.damage);
     }
 
@@ -127,7 +146,6 @@ public class Bloon : MonoBehaviour
 
     private void OnBloonPopped(float remainingDamage)
     {
-        print(remainingDamage);
 
         if (children > 0 && Index > 0)
         {
@@ -139,11 +157,10 @@ public class Bloon : MonoBehaviour
             }
 
             BloonHirachy.BloonInfo info = bloonHirachy.Hirachy[Index - (int)remainingDamage - 1]; // Currently only gets the prievious index
-            print(info);
             for (int i = 0; i < children; i++) // We loop through all the children
             {
                 Bloon b = Instantiate(PrefabGetter.BaseBloon, transform.position, transform.rotation); // We create a new base bloon
-                b.Init(); // Finally init the new bloon
+                b.Init(tracker.bloonID); // Finally init the new bloon
                 b.SetBloonInfo(info); // And set it to the info
             }
         }

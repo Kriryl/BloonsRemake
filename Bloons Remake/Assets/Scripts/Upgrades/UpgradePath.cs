@@ -19,6 +19,8 @@ namespace PlayerUpgrades
         public TextMeshProUGUI buttonText;
         public Button upgradeButton;
 
+        public bool isLocked = false;
+
         public float Money { get => Main.Current.money; set => Main.Current.money = value; }
 
         public Upgrades.Upgrade CurrentUpgrade { get; set; }
@@ -30,7 +32,25 @@ namespace PlayerUpgrades
 
         private void Update()
         {
-            CurrentUpgrade = GetPath().GetUpgrade();
+            Upgrades.Path path = GetPath();
+
+            if (path == null) { return; }
+
+            isLocked = path.Locked;
+
+            if (isLocked)
+            {
+                upgradeName.text = "Locked Path";
+                upgradeDescription.text = "";
+                buttonText.text = "Locked";
+
+                Image i = upgradeButton.GetComponent<Image>();
+                if (!i) { return; }
+                i.color = Color.gray;
+                return;
+            }
+
+            CurrentUpgrade = path.GetUpgrade();
 
             if (CurrentUpgrade == null) { return; }
 
@@ -45,6 +65,8 @@ namespace PlayerUpgrades
 
         public void OnBuy()
         {
+            if (isLocked) { return; }
+
             if (!upgrades) { return; }
 
             if (!CanAfford(CurrentUpgrade.cost)) { return; }
@@ -81,6 +103,7 @@ namespace PlayerUpgrades
                 default:
                     break;
             }
+            Main.Current.money -= pathIndex.GetUpgrade().cost;
             pathIndex.Next();
         }
 

@@ -16,6 +16,8 @@ namespace PlayerUpgrades
 
             public Upgrade PlaceHolder;
 
+            public bool Locked { get; set; }
+
             public Upgrade GetUpgrade()
             {
                 return Index > upgrades.Count - 1 ? PlaceHolder : upgrades[Index];
@@ -38,6 +40,9 @@ namespace PlayerUpgrades
         public Path pOne, pTwo, pThree;
 
         public GameObject upgradeContainer;
+
+        public int usedUpgrades = 0;
+        public List<Path> unlocked = new();
 
         public Player Player { get; private set; }
 
@@ -64,18 +69,53 @@ namespace PlayerUpgrades
 
         public virtual void OnPathOneUpgrade(int index)
         {
-
+            if (index == 0)
+            {
+                unlocked.Add(Paths[0]);
+                usedUpgrades++;
+                if (usedUpgrades >= 2)
+                {
+                    CheckLocked(Paths[1], Paths[2]);
+                }
+            }
         }
 
         public virtual void OnPathTwoUpgrade(int index)
         {
-
+            if (index == 0)
+            {
+                unlocked.Add(Paths[1]);
+                usedUpgrades++;
+                if (usedUpgrades >= 2)
+                {
+                    CheckLocked(Paths[0], Paths[2]);
+                }
+            }
         }
 
         public virtual void OnPathThreeUpgrade(int index)
         {
-
+            if (index == 0)
+            {
+                unlocked.Add(Paths[2]);
+                usedUpgrades++;
+                if (usedUpgrades >= 2)
+                {
+                    CheckLocked(Paths[0], Paths[1]);
+                }
+            }
         }
 
+        private void CheckLocked(Path check, Path check2)
+        {
+            if (unlocked.Contains(check))
+            {
+                check2.Locked = true;
+            }
+            else if (unlocked.Contains(check2))
+            {
+                check.Locked = true;
+            }
+        }
     }
 }

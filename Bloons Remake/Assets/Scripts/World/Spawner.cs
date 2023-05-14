@@ -21,7 +21,7 @@ public class Spawner : MonoBehaviour
         {
             Bloon newBloon = Instantiate(defaultBloon, transform.position, transform.rotation);
 
-            newBloon.bloonType = BloonType.Rainbow;
+            newBloon.bloonType = BloonType.Ceramic;
             newBloon.Init();
             nextSpawnTime = Time.time + (1 / rate);
         }

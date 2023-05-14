@@ -50,6 +50,11 @@ public class Player : MonoBehaviour
     /// </summary>
     public float ProjectileLifeTime { get; set; } = 1f;
 
+    /// <summary>
+    /// The location(s) the projectile will spawn
+    /// </summary>
+    public List<Transform> ProjectileSpawns { get; set; } = new();
+
     public bool isGrounded = true;
 
     private Camera cam;
@@ -73,6 +78,8 @@ public class Player : MonoBehaviour
         mouseLooker.Init(transform, cam.transform);
 
         nextTimeToFire = Time.time + (1 / AttackSpeed);
+
+        ProjectileSpawns.Add(cam.transform);
 
         SetupPlayer();
     }
@@ -103,12 +110,15 @@ public class Player : MonoBehaviour
     {
         if (!Projectile) { return; }
 
-        Projectile newProjectile = Instantiate(Projectile, cam.transform.position, transform.rotation);
+        foreach (Transform t in ProjectileSpawns)
+        {
+            Projectile newProjectile = Instantiate(Projectile, t.position, transform.rotation);
 
-        newProjectile.Init(ProjectileSpeed, ProjectileMass, Damage, Pierce);
+            newProjectile.Init(ProjectileSpeed, ProjectileMass, Damage, Pierce);
 
-        newProjectile.Fire(transform.rotation, cam.transform.rotation);
-        Destroy(newProjectile.gameObject, ProjectileLifeTime);
+            newProjectile.Fire(transform.rotation, cam.transform.rotation);
+            Destroy(newProjectile.gameObject, ProjectileLifeTime);
+        }
     }
 
     private void MovePlayer()
@@ -131,6 +141,18 @@ public class Player : MonoBehaviour
         if (jump > Mathf.Epsilon && isGrounded)
         {
             rb.AddForce(jump * jumpHeight * Vector3.up);
+        }
+    }
+
+    public void AddProjectile(Vector3[] pos)
+    {
+        foreach (Vector3 p in pos)
+        {
+            GameObject g = new("Spawn");
+            g.transform.SetParent(transform);
+            g.transform.localPosition = p;
+
+            ProjectileSpawns.Add(g.transform);
         }
     }
 

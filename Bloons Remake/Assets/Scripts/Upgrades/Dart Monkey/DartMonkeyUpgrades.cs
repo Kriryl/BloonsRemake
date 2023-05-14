@@ -9,12 +9,14 @@ namespace PlayerUpgrades
         [Header("Path One:")]
         public int pierceOne;
         public int pierceTwo;
+        public int pierceThree;
 
         [Space]
 
         [Header("Path Two:")]
         public float attackSpeedOne;
         public float attackSpeedTwo;
+        public float offsetTwo = 1f;
 
         [Space]
 
@@ -33,10 +35,13 @@ namespace PlayerUpgrades
                     Player.Pierce += pierceTwo;
                     break;
                 case 2:
+                    Player.Pierce += pierceThree;
+                    Player.Projectile = PrefabGetter.DartMonkeySpikedBall;
                     break;
                 default:
                     break;
             }
+            base.OnPathOneUpgrade(index);
         }
 
         public override void OnPathTwoUpgrade(int index)
@@ -50,6 +55,8 @@ namespace PlayerUpgrades
                     Player.AttackSpeed += attackSpeedTwo;
                     break;
                 case 2:
+                    Vector3[] pos = { Vector3.right * offsetTwo, Vector3.left * offsetTwo };
+                    Player.AddProjectile(pos);
                     break;
                 default:
                     break;
@@ -69,6 +76,8 @@ namespace PlayerUpgrades
                 case 1:
                     Player.Damage += damageTwo;
                     Player.ProjectileSpeed += speedTwo;
+                    Player.Projectile = PrefabGetter.DartMonkeyCrossbow;
+
                     break;
                 case 2:
                     break;

@@ -77,7 +77,7 @@ public class BloonHirachy : MonoBehaviour
                 info = rainbow;
                 break;
             case BloonType.Ceramic:
-                info = pink;
+                info = ceramic;
                 break;
             default:
                 break;

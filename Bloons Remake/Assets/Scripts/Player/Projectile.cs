@@ -13,6 +13,8 @@ public class Projectile : MonoBehaviour
 
     public Rigidbody RigidBody { get; set; }
 
+    public List<int> trackIDs = new();
+
     private void Start()
     {
         RigidBody = GetComponent<Rigidbody>();
@@ -50,6 +52,7 @@ public class Projectile : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (!other.GetComponent<Bloon>()) { return; }
+
         usedPierce++;
         if (usedPierce > pierce)
         {

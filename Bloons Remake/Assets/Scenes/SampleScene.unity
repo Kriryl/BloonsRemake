@@ -912,6 +912,7 @@ MonoBehaviour:
   upgradeDescription: {fileID: 1964783059}
   buttonText: {fileID: 513600474}
   upgradeButton: {fileID: 235793568}
+  isLocked: 0
 --- !u!1 &386169674
 GameObject:
   m_ObjectHideFlags: 0
@@ -2072,6 +2073,7 @@ MonoBehaviour:
   upgradeDescription: {fileID: 2106432067}
   buttonText: {fileID: 71497909}
   upgradeButton: {fileID: 1760950036}
+  isLocked: 0
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -2256,13 +2258,13 @@ MonoBehaviour:
   rainbow:
     speed: 2.2
     health: 1
-    material: {fileID: 2100000, guid: df9289cb5a6b74143a56155121a184eb, type: 2}
+    material: {fileID: 2100000, guid: 843582cb3ea3c2e4995a6e53390796c7, type: 2}
     numOfChilden: 2
   ceramic:
     speed: 2.5
     health: 10
-    material: {fileID: 2100000, guid: 843582cb3ea3c2e4995a6e53390796c7, type: 2}
-    numOfChilden: 2
+    material: {fileID: 2100000, guid: df9289cb5a6b74143a56155121a184eb, type: 2}
+    numOfChilden: 4
 --- !u!114 &715738992
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2290,6 +2292,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dartMonkeyProjectile: {fileID: 2581659545609513383, guid: 6dfed13c631d99f428b71f1a1a2abf86, type: 3}
   dartMonkeySpikedBall: {fileID: 3903993487216385231, guid: 1d9d3915f74c1db4487038d242c975e0, type: 3}
+  dartMonketCrossbow: {fileID: 2581659545609513383, guid: 477f831cedf952a489aa37180c08a652, type: 3}
   baseBloon: {fileID: 7908016540458574407, guid: 0e5fd1c3ae647a042b1044e86ee936be, type: 3}
 --- !u!1 &723035914
 GameObject:
@@ -2388,6 +2391,7 @@ MonoBehaviour:
   upgradeDescription: {fileID: 1271213052}
   buttonText: {fileID: 1296783747}
   upgradeButton: {fileID: 160034184}
+  isLocked: 0
 --- !u!1 &858103800
 GameObject:
   m_ObjectHideFlags: 0
@@ -2924,9 +2928,12 @@ MonoBehaviour:
     - cost: 45
       upgradeName: Sharper Shots
       description: Increase pierce by 2.
+    - cost: 80
+      upgradeName: Spiked Balls
+      description: Replace Darts with spiked balls that can pop way more bloons.
     PlaceHolder:
       cost: 0
-      upgradeName: 
+      upgradeName: Max Upgrades
       description: 
   pTwo:
     upgrades:
@@ -2936,9 +2943,12 @@ MonoBehaviour:
     - cost: 30
       upgradeName: Even Faster Throwing
       description: Throw 33% faster!
+    - cost: 120
+      upgradeName: Triple Shot
+      description: Shoot 3 darts instead of 1.
     PlaceHolder:
       cost: 0
-      upgradeName: 
+      upgradeName: Max Upgrades
       description: 
   pThree:
     upgrades:
@@ -2951,12 +2961,16 @@ MonoBehaviour:
     PlaceHolder:
       cost: 0
       upgradeName: Max Upgrades
-      description: No more!
+      description: 
   upgradeContainer: {fileID: 1277046132}
+  usedUpgrades: 0
+  unlocked: []
   pierceOne: 1
   pierceTwo: 2
+  pierceThree: 8
   attackSpeedOne: 0.15
   attackSpeedTwo: 0.33
+  offsetTwo: 0.5
   rangeOne: 1
   speedOne: 500
   damageTwo: 2
@@ -3711,7 +3725,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   defaultBloon: {fileID: 7908016540458574407, guid: 0e5fd1c3ae647a042b1044e86ee936be, type: 3}
-  rate: 0.15
+  rate: 0.1
 --- !u!4 &1755003158
 Transform:
   m_ObjectHideFlags: 0
