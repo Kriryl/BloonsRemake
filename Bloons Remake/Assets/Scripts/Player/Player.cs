@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
 {
     public PlayerType playerType;
     public float jumpHeight;
+    public int lives = 100;
 
     /// <summary>
     /// How fast the player moves (In units/second).
@@ -164,5 +165,13 @@ public class Player : MonoBehaviour
     private void CheckIfGrounded()
     {
         if (!playerCollider) { return; }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (!other.TryGetComponent(out Bloon b)) { return; }
+
+        lives -= b.RBE;
+        b.OnBloonPopped(0f);
     }
 }

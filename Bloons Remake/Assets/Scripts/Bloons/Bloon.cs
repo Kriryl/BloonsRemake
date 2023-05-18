@@ -18,6 +18,14 @@ public class Bloon : MonoBehaviour
     private NavMeshAgent agent;
     private BloonHirachy bloonHirachy;
     private Tracker tracker;
+    private Spawner spawner;
+
+    public float SpeedMultiplier { get; private set; } = 1f;
+
+    /// <summary>
+    /// The Red Bloon Equilivant (RBA). How many lives does it take when collided with?
+    /// </summary>
+    public int RBE { get; private set; }
 
     public BloonHirachy.BloonInfo BloonInfo { get; private set; }
 
@@ -26,6 +34,11 @@ public class Bloon : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         target = Main.Current.SceneGrabber.Player.transform;
         tracker = GetComponent<Tracker>();
+        spawner = FindObjectOfType<Spawner>();
+
+        spawner.bloons.Add(this);
+
+        SpeedMultiplier = Main.Current.globalSpeedMultiplier;
 
         if (ID == 0)
         {
@@ -63,6 +76,7 @@ public class Bloon : MonoBehaviour
         Health = BloonInfo.health;
         Index = BloonInfo.BloonIndex;
         children = BloonInfo.numOfChilden;
+        RBE = BloonInfo.rbe;
 
         if (!mesh) { return; }
 
@@ -83,11 +97,8 @@ public class Bloon : MonoBehaviour
     {
         if (!agent || !target) { return; }
 
-        agent.speed = speed;
-        if (!agent.SetDestination(target.transform.position))
-        {
-            Debug.LogWarning(name + " failed to set destination.");
-        }
+        agent.speed = speed * SpeedMultiplier;
+        agent.SetDestination(target.position);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -119,8 +130,7 @@ public class Bloon : MonoBehaviour
             {
                 if (Index <= 0) // If this is the first bloon, destroy it
                 {
-                    Main.Current.money += 1f;
-                    Destroy(gameObject);
+                    OnBloonPopped();
                     break;
                 }
                 else
@@ -128,7 +138,7 @@ public class Bloon : MonoBehaviour
                     if (children > 0) // If this bloon spawns more bloons we remove this bloon
                     {
                         remaining--;
-                        OnBloonPopped(remaining);
+                        OnBloonSplit(remaining);
                         break;
                     }
                     else
@@ -144,7 +154,7 @@ public class Bloon : MonoBehaviour
         }
     }
 
-    private void OnBloonPopped(float remainingDamage)
+    private void OnBloonSplit(float remainingDamage)
     {
 
         if (children > 0 && Index > 0)
@@ -152,6 +162,7 @@ public class Bloon : MonoBehaviour
             if (Index - remainingDamage < 0)
             {
                 Main.Current.money += remainingDamage;
+                spawner.bloons.Remove(this);
                 Destroy(gameObject);
                 return;
             }
@@ -165,7 +176,13 @@ public class Bloon : MonoBehaviour
             }
         }
 
-        Main.Current.money += 1f + remainingDamage;
+        OnBloonPopped(1f + remainingDamage);
+    }
+
+    public void OnBloonPopped(float money = 1f)
+    {
+        Main.Current.money += money;
+        spawner.bloons.Remove(this);
         Destroy(gameObject);
     }
 }

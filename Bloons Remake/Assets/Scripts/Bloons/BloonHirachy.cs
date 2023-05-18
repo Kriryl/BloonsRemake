@@ -11,6 +11,7 @@ public class BloonHirachy : MonoBehaviour
         public float health = 1f;
         public Material material;
         public int numOfChilden = 0;
+        public int rbe = 1;
 
         public int BloonIndex { get; set; }
 

@@ -8,6 +8,8 @@ public class Main : MonoBehaviour
 
     public static bool MenuOpen { get; private set; }
 
+    public float globalSpeedMultiplier = 1f;
+
     public SceneGrabber SceneGrabber { get; private set; }
     public BloonHirachy Hirachy { get; private set; }
 

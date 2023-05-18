@@ -38,6 +38,12 @@ namespace PlayerUpgrades
                     Player.Pierce += pierceThree;
                     Player.Projectile = PrefabGetter.DartMonkeySpikedBall;
                     break;
+                case 3:
+                    Player.Damage += 1f;
+                    Player.ProjectileSpeed += 800f;
+                    Player.AttackSpeed += 1f;
+                    Player.Projectile = PrefabGetter.DartMonkeySpikedBall2;
+                    break;
                 default:
                     break;
             }
