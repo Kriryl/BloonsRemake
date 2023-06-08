@@ -45,73 +45,81 @@ public class Spawner : MonoBehaviour
     public List<Round> rounds = new();
 
     public float spawnTimer = 0f;
-    public bool spawning = false;
+    public bool roundHasEnded = false;
+    public bool waiting = false;
 
     public int RoundIndex { get; set; } = 0;
 
     private void Update()
     {
         roundText.text = $"Round: {RoundIndex}";
-        delayText.text = spawnTimer.ToString();
-        delayText.gameObject.SetActive(!spawning);
-
-        if (spawning) { return; }
+        delayText.text = (Mathf.Round(spawnTimer * 10) / 10).ToString();
+        delayText.gameObject.SetActive(waiting);
 
         if (RoundIndex + 1 > rounds.Count) { return; }
 
-        if (bloons.Count <= 0)
+        if (roundHasEnded && !waiting)
         {
-            spawnTimer += Time.deltaTime;
-            if (spawnTimer >= 5)
-            {
-                OnRoundStart();
-                StartRound();
-            }
+            OnRoundEnd();
+            waiting = true;
+        }
+
+        if (!waiting) { return; }
+
+        spawnTimer += Time.deltaTime;
+        if (spawnTimer >= 5)
+        {
+            waiting = false;
+            StartRound();
         }
     }
 
-    public void OnRoundStart()
+    public void OnRoundEnd()
     {
         Main.Current.money += 100 + (10 * RoundIndex);
+        spawnTimer = 0f;
+        RoundIndex++;
     }
 
     private void StartRound()
     {
-        spawning = true;
+        roundHasEnded = false;
         Round round = rounds[RoundIndex];
         if (round == null) { return; }
 
         _ = StartCoroutine(SpawnWaves(round));
-        spawnTimer = 0f;
-        RoundIndex++;
     }
 
     public IEnumerator SpawnWaves(Round round)
     {
         for (int i = 0; i < round.waves.Count; i++)
         {
-            WaveRound wave = round.waves[i];
-            _ = StartCoroutine(SpawnWave(wave.wave));
+            WaveRound waveRound = round.waves[i];
+
+            if (waveRound == null) { break; }
+
+            var wave = waveRound.wave;
+
+            if (wave == null) { break; }
+
+            var info = hirachy.GetBloonInfo(wave.type);
+
+            for (int i2 = 0; i2 < wave.amount; i2++)
+            {
+                Bloon newBloon = Instantiate(bloon, transform.position, transform.rotation);
+
+                newBloon.Init();
+                newBloon.SetBloonInfo(info);
+
+                yield return new WaitForSeconds(wave.delay);
+            }
 
             if (i == round.waves.Count) { break; }
 
-            yield return new WaitForSeconds(wave.delay);
+            yield return new WaitForSeconds(waveRound.delay);
         }
-        spawning = false;
-    }
 
-    private IEnumerator SpawnWave(Wave wave)
-    {
-        var info = hirachy.GetBloonInfo(wave.type);
-
-        for (int i = 0; i < wave.amount; i++)
-        {
-            Bloon newBloon = Instantiate(bloon, transform.position, transform.rotation);
-
-            newBloon.Init();
-            newBloon.SetBloonInfo(info);
-
-            yield return new WaitForSeconds(wave.delay);
-        }
+        yield return new WaitUntil(() => bloons.Count <= 0);
+        roundHasEnded = true;
     }
 }

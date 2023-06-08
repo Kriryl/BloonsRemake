@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,11 +8,12 @@ public class Player : MonoBehaviour
     public PlayerType playerType;
     public float jumpHeight;
     public int lives = 100;
+    public float speed = 4f;
 
     /// <summary>
     /// How fast the player moves (In units/second).
     /// </summary>
-    public float Speed { get; set; } = 4f;
+    public float Speed => speed;
 
     /// <summary>
     /// How many times a second the player shoots.

@@ -5,6 +5,7 @@ public class Main : MonoBehaviour
 {
     public float money = 0f;
     public TextMeshProUGUI moneyText;
+    public TextMeshProUGUI livesText;
 
     public static bool MenuOpen { get; private set; }
 
@@ -15,10 +16,13 @@ public class Main : MonoBehaviour
 
     public static Main Current => FindObjectOfType<Main>();
 
+    public Player Player { get; private set; }
+
     private void Awake()
     {
         SceneGrabber = GetComponent<SceneGrabber>();
         Hirachy = GetComponent<BloonHirachy>();
+        Player = SceneGrabber.Player;
     }
 
     private void Update()
@@ -36,5 +40,8 @@ public class Main : MonoBehaviour
             MenuOpen = false;
         }
         moneyText.text = $"${money}";
+
+        if (!Player) { return; }
+        livesText.text = $"Lives: {Player.lives}";
     }
 }
